@@ -4,21 +4,7 @@
     {
         static void Main(string[] args)
         {
-            int[] oneToTwentyArray = new int[20];
-            for (int i = 0; i < oneToTwentyArray.Length; i++)
-            {
-                oneToTwentyArray[i] = i+1;
-            }
-            Console.WriteLine(GetLowestNumberDivisibleByInput(oneToTwentyArray));
-            //(int[] highestSumGroup, ulong highestSum) = GetHighestSumOfAdjacentNumbersInSeries("7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450");
-            //
-            //Console.Write("The numbers in the group with the highest product are:");
-            //for (int i = 0; i < highestSumGroup.Length; i++)
-            //{
-            //    Console.Write($" {highestSumGroup[i]} ");
-            //}
-            //Console.WriteLine();
-            //Console.WriteLine($"The sum is {highestSum}");
+            Console.WriteLine(TenThousandAndFirstPrime());
         }
 
         static List<int> GetMultiplesOfTwoNumbers(int num1 = 3, int num2 = 5, int highestNumber = 1000)
@@ -106,7 +92,7 @@
             }
         }
 
-        static (int[], ulong) GetHighestSumOfAdjacentNumbersInSeries(string series, int groupingSize = 13)
+        static (int[], ulong) GetHighestProductOfAdjacentNumbersInSeries(string series, int groupingSize = 13)
         {
             int[] seriesArr = series.ToString().Select(o => Convert.ToInt32(o) - 48).ToArray();
             int[] highestProductGroup = new int[groupingSize];
@@ -132,6 +118,80 @@
                 }
             }
             return (highestProductGroup, highestProduct);
+        }
+
+        static int SpecialPythagoreanTriplet()
+        {
+            int c;
+
+            for (int a = 0; a < 1000; a++)
+            {
+                for (int b = 0; b < 500; b++)
+                {
+                    c = 1000 - a - b;
+                    if(Math.Pow(a,2) + Math.Pow(b,2) == Math.Pow(c,2))
+                    {
+                        return a * b * c;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        static int TenThousandAndFirstPrime()
+        {
+            int primeCount = 0;
+            bool[] primesArr = SieveOfEratosthenes(110000);
+            for (int i = 0; i < primesArr.Length; i++)
+            {
+                if (primesArr[i])
+                {
+                    primeCount++;
+                }
+                if (primeCount == 10001)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
+        static long SumOfPrimesUnderTwoMillion()
+        {
+            long sum = 0;
+            bool[] arrOfPrimes = SieveOfEratosthenes(2000000);
+
+            for (int i = 0; i < arrOfPrimes.Length; i++)
+            {
+                if (arrOfPrimes[i])
+                {
+                    sum += i;
+                }
+            }
+            return sum;
+        }
+        
+        static bool[] SieveOfEratosthenes(int maxNumber)
+        {
+            bool[] primes = new bool[maxNumber+1];
+
+            for (int i = 2; i < primes.Length; i++)
+            {
+                primes[i] = true;
+            }
+
+            for (int i = 2; i < Math.Sqrt(maxNumber)+1; i++)
+            {
+                if (primes[i])
+                {
+                    for (int j = (int)Math.Pow(i,2); j <= maxNumber; j+=i)
+                    {
+                        primes[j] = false;
+                    }
+                }
+            }
+            return primes;
         }
     }
 }
