@@ -217,22 +217,19 @@
 
             for (int i = 0; i < jaggedStringGrid.Length; i++)
             {
-                for (int j = 0; j < jaggedStringGrid.Length; j++)
+                for (int j = 0; j < jaggedStringGrid[0].Length; j++)
                 {
-                    try
+                    if(j < jaggedStringGrid[j].Length-3)
                     {
                         int sumToRight = jaggedStringGrid[i][j] * jaggedStringGrid[i][j + 1] * jaggedStringGrid[i][j + 2] * jaggedStringGrid[i][j + 3];
-                        if(sumToRight > highestProduct)
+                        
+                        if (sumToRight > highestProduct)
                         {
                             highestProduct = sumToRight;
                         }
                     }
-                    catch(IndexOutOfRangeException)
-                    {
 
-                    }
-
-                    try
+                    if(j > 3)
                     {
                         int sumToLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i][j - 1] * jaggedStringGrid[i][j - 2] * jaggedStringGrid[i][j - 3];
                         if (sumToLeft > highestProduct)
@@ -240,90 +237,63 @@
                             highestProduct = sumToLeft;
                         }
                     }
-                    catch (IndexOutOfRangeException)
-                    {
 
-                    }
-
-                    try
+                    if(i > 3)
                     {
                         int sumUp = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j] * jaggedStringGrid[i - 2][j] * jaggedStringGrid[i - 3][j];
                         if (sumUp > highestProduct)
                         {
                             highestProduct = sumUp;
                         }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
 
+                        if(j < jaggedStringGrid[j].Length - 3)
+                        {
+                            int sumDiagonalUpRight = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j + 1] * jaggedStringGrid[i - 2][j + 2] * jaggedStringGrid[i - 3][j + 3];
+                            if (sumDiagonalUpRight > highestProduct)
+                            {
+                                highestProduct = sumDiagonalUpRight;
+                            }
+                        }
+
+                        if(j > 3)
+                        {
+                            int sumDiagonalUpLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j - 1] * jaggedStringGrid[i - 2][j - 2] * jaggedStringGrid[i - 3][j - 3];
+                            if (sumDiagonalUpLeft > highestProduct)
+                            {
+                                highestProduct = sumDiagonalUpLeft;
+                            }
+                        }
                     }
 
-                    try
+                    if (i < jaggedStringGrid.Length - 3)
                     {
                         int sumDown = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j] * jaggedStringGrid[i + 2][j] * jaggedStringGrid[i + 3][j];
                         if (sumDown > highestProduct)
                         {
                             highestProduct = sumDown;
                         }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
 
-                    }
-
-                    try
-                    {
-                        int sumDiagonalDownRight = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j+1] * jaggedStringGrid[i + 2][j+2] * jaggedStringGrid[i + 3][j+3];
-                        if (sumDiagonalDownRight > highestProduct)
+                        if(j < jaggedStringGrid[j].Length - 3)
                         {
-                            highestProduct = sumDiagonalDownRight;
+                            int sumDiagonalDownRight = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j + 1] * jaggedStringGrid[i + 2][j + 2] * jaggedStringGrid[i + 3][j + 3];
+                            if (sumDiagonalDownRight > highestProduct)
+                            {
+                                highestProduct = sumDiagonalDownRight;
+                            }
                         }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
 
-                    }
-
-                    try
-                    {
-                        int sumDiagonalDownLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j - 1] * jaggedStringGrid[i + 2][j - 2] * jaggedStringGrid[i + 3][j - 3];
-                        if (sumDiagonalDownLeft > highestProduct)
+                        if(j > 3)
                         {
-                            highestProduct = sumDiagonalDownLeft;
+                            int sumDiagonalDownLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j - 1] * jaggedStringGrid[i + 2][j - 2] * jaggedStringGrid[i + 3][j - 3];
+                            if (sumDiagonalDownLeft > highestProduct)
+                            {
+                                highestProduct = sumDiagonalDownLeft;
+                            }
                         }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-
-                    }
-
-                    try
-                    {
-                        int sumDiagonalUpRight = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j + 1] * jaggedStringGrid[i - 2][j + 2] * jaggedStringGrid[i - 3][j + 3];
-                        if (sumDiagonalUpRight > highestProduct)
-                        {
-                            highestProduct = sumDiagonalUpRight;
-                        }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-
-                    }
-
-                    try
-                    {
-                        int sumDiagonalUpLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j - 1] * jaggedStringGrid[i - 2][j - 2] * jaggedStringGrid[i - 3][j - 3];
-                        if (sumDiagonalUpLeft > highestProduct)
-                        {
-                            highestProduct = sumDiagonalUpLeft;
-                        }
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
-
                     }
                 }
             }
+
             return highestProduct;
         }
     }
