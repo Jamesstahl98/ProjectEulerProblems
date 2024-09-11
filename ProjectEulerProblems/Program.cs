@@ -201,7 +201,6 @@
             int[][] jaggedStringGrid = new int[stringArrayRows.Length][];
             int highestProduct = 0;
 
-
             for (int i = 0; i < jaggedStringGrid.Length; i++)
             {
                 string[] tempStringArr = stringArrayRows[i].Split(' ');
@@ -219,81 +218,92 @@
             {
                 for (int j = 0; j < jaggedStringGrid[0].Length; j++)
                 {
-                    if(j < jaggedStringGrid[j].Length-3)
+                    int highestProductInIndex = GetHighestProductOfJaggedArrayIndex(jaggedStringGrid, i, j);
+                    if(highestProductInIndex > highestProduct)
                     {
-                        int sumToRight = jaggedStringGrid[i][j] * jaggedStringGrid[i][j + 1] * jaggedStringGrid[i][j + 2] * jaggedStringGrid[i][j + 3];
-                        
-                        if (sumToRight > highestProduct)
-                        {
-                            highestProduct = sumToRight;
-                        }
-                    }
-
-                    if(j > 3)
-                    {
-                        int sumToLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i][j - 1] * jaggedStringGrid[i][j - 2] * jaggedStringGrid[i][j - 3];
-                        if (sumToLeft > highestProduct)
-                        {
-                            highestProduct = sumToLeft;
-                        }
-                    }
-
-                    if(i > 3)
-                    {
-                        int sumUp = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j] * jaggedStringGrid[i - 2][j] * jaggedStringGrid[i - 3][j];
-                        if (sumUp > highestProduct)
-                        {
-                            highestProduct = sumUp;
-                        }
-
-                        if(j < jaggedStringGrid[j].Length - 3)
-                        {
-                            int sumDiagonalUpRight = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j + 1] * jaggedStringGrid[i - 2][j + 2] * jaggedStringGrid[i - 3][j + 3];
-                            if (sumDiagonalUpRight > highestProduct)
-                            {
-                                highestProduct = sumDiagonalUpRight;
-                            }
-                        }
-
-                        if(j > 3)
-                        {
-                            int sumDiagonalUpLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i - 1][j - 1] * jaggedStringGrid[i - 2][j - 2] * jaggedStringGrid[i - 3][j - 3];
-                            if (sumDiagonalUpLeft > highestProduct)
-                            {
-                                highestProduct = sumDiagonalUpLeft;
-                            }
-                        }
-                    }
-
-                    if (i < jaggedStringGrid.Length - 3)
-                    {
-                        int sumDown = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j] * jaggedStringGrid[i + 2][j] * jaggedStringGrid[i + 3][j];
-                        if (sumDown > highestProduct)
-                        {
-                            highestProduct = sumDown;
-                        }
-
-                        if(j < jaggedStringGrid[j].Length - 3)
-                        {
-                            int sumDiagonalDownRight = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j + 1] * jaggedStringGrid[i + 2][j + 2] * jaggedStringGrid[i + 3][j + 3];
-                            if (sumDiagonalDownRight > highestProduct)
-                            {
-                                highestProduct = sumDiagonalDownRight;
-                            }
-                        }
-
-                        if(j > 3)
-                        {
-                            int sumDiagonalDownLeft = jaggedStringGrid[i][j] * jaggedStringGrid[i + 1][j - 1] * jaggedStringGrid[i + 2][j - 2] * jaggedStringGrid[i + 3][j - 3];
-                            if (sumDiagonalDownLeft > highestProduct)
-                            {
-                                highestProduct = sumDiagonalDownLeft;
-                            }
-                        }
+                        highestProduct = highestProductInIndex;
                     }
                 }
             }
 
+            return highestProduct;
+        }
+
+        static int GetHighestProductOfJaggedArrayIndex(int[][] jaggedStringGrid, int iIndex, int jIndex)
+        {
+            int highestProduct = 0;
+            if(jIndex < jaggedStringGrid[jIndex].Length-3)
+            {
+                int productToRight = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex][jIndex + 1] * jaggedStringGrid[iIndex][jIndex + 2] * jaggedStringGrid[iIndex][jIndex + 3];
+                
+                if (productToRight > highestProduct)
+                {
+                    highestProduct = productToRight;
+                }
+            }
+            
+            if(jIndex > 3)
+            {
+                int productToLeft = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex][jIndex - 1] * jaggedStringGrid[iIndex][jIndex - 2] * jaggedStringGrid[iIndex][jIndex - 3];
+                if (productToLeft > highestProduct)
+                {
+                    highestProduct = productToLeft;
+                }
+            }
+            
+            if(iIndex > 3)
+            {
+                int sumUp = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex - 1][jIndex] * jaggedStringGrid[iIndex - 2][jIndex] * jaggedStringGrid[iIndex - 3][jIndex];
+                if (sumUp > highestProduct)
+                {
+                    highestProduct = sumUp;
+                }
+            
+                if(jIndex < jaggedStringGrid[jIndex].Length - 3)
+                {
+                    int productDiagonalUpRight = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex - 1][jIndex + 1] * jaggedStringGrid[iIndex - 2][jIndex + 2] * jaggedStringGrid[iIndex - 3][jIndex + 3];
+                    if (productDiagonalUpRight > highestProduct)
+                    {
+                        highestProduct = productDiagonalUpRight;
+                    }
+                }
+            
+                if(jIndex > 3)
+                {
+                    int productDiagonalUpLeft = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex - 1][jIndex - 1] * jaggedStringGrid[iIndex - 2][jIndex - 2] * jaggedStringGrid[iIndex - 3][iIndex - 3];
+                    if (productDiagonalUpLeft > highestProduct)
+                    {
+                        highestProduct = productDiagonalUpLeft;
+                    }
+                }
+            }
+            
+            if (iIndex < jaggedStringGrid.Length - 3)
+            {
+                int sumDown = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex + 1][jIndex] * jaggedStringGrid[iIndex + 2][jIndex] * jaggedStringGrid[iIndex + 3][jIndex];
+                if (sumDown > highestProduct)
+                {
+                    highestProduct = sumDown;
+                }
+            
+                if(jIndex < jaggedStringGrid[jIndex].Length - 3)
+                {
+                    int productDiagonalDownRight = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex + 1][jIndex + 1] * jaggedStringGrid[iIndex + 2][jIndex + 2] * jaggedStringGrid[iIndex + 3][jIndex + 3];
+                    if (productDiagonalDownRight > highestProduct)
+                    {
+                        highestProduct = productDiagonalDownRight;
+                    }
+                }
+            
+                if(jIndex > 3)
+                {
+                    int productDiagonalDownLeft = jaggedStringGrid[iIndex][jIndex] * jaggedStringGrid[iIndex + 1][jIndex - 1] * jaggedStringGrid[iIndex + 2][jIndex - 2] * jaggedStringGrid[iIndex + 3][jIndex - 3];
+                    if (productDiagonalDownLeft > highestProduct)
+                    {
+                        highestProduct = productDiagonalDownLeft;
+                    }
+                }
+            }
             return highestProduct;
         }
     }
