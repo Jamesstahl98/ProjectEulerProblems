@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
+            /*Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
 463769376774900097.12648124896970078050417018260538 
 743249861995247410.59474233309513058123726617309629 
 919422133635741615.72522430563301811072406154908250 
@@ -103,7 +103,8 @@
 771585425020165450.90413245809786882778948721859617 
 721078384350691861.55435662884062257473692284509516 
 208496039801340017.23930671666823555245252804609722 
-535035342264725242.50874054075591789781264330331690"));
+535035342264725242.50874054075591789781264330331690"));*/
+            Console.WriteLine(HighlyDivisibleTriangularNumber());
         }
 
         static List<int> GetMultiplesOfTwoNumbers(int num1 = 3, int num2 = 5, int highestNumber = 1000)
@@ -406,27 +407,37 @@
             return highestProduct;
         }
 
-        static UInt128 HighlyDivisibleTriangularNumber()
+        static int HighlyDivisibleTriangularNumber()
         {
-            UInt128 nextTriangularNumber = 1;
-            for (UInt128 i = 1; i < 765765000; i+=nextTriangularNumber)
+            int triangularnum = 1;
+            for (int num = 2; num > 0; num++)
             {
-                nextTriangularNumber++;
-                int divisors = 0;
-
-                for (UInt128 j = 1; j <= i; j++)
+                if (Has501Divisors(triangularnum))
                 {
-                    if(i % j == 0)
-                    {
-                        divisors++;
-                    }
-                    if(divisors == 500)
-                    {
-                        return i;
-                    }
+                    return triangularnum;
+                }
+                triangularnum += num;
+            }
+
+            return 0;
+        }
+
+        static bool Has501Divisors(int numToCheck)
+        {
+            int count = 0;
+            for (int i = 1; i < Math.Sqrt(numToCheck); i++)
+            {
+                if (numToCheck % i == 0)
+                {
+                    count += 2;
+                }
+
+                if (count > 500)
+                {
+                    return true;
                 }
             }
-            return 0;
+            return false;
         }
 
         static string GetFirstTenDigitsOfSum(string input)
@@ -438,7 +449,6 @@
             for (int i = 0; i < stringArr.Length; i++)
             {
                 decimalArr[i] = decimal.Parse(stringArr[i]);
-                Console.WriteLine(decimalArr[i]);
             }
 
             for (int i = 0; i < decimalArr.Length; i++)
