@@ -1,4 +1,8 @@
-﻿namespace ProjectEulerProblems
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
+using static ProjectEulerProblems.Program;
+
+namespace ProjectEulerProblems
 {
     internal class Program
     {
@@ -104,7 +108,8 @@
 721078384350691861.55435662884062257473692284509516 
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
-            Console.WriteLine(HighlyDivisibleTriangularNumber());
+
+            Console.WriteLine(GetLongestCollatzSequence());
         }
 
         static List<int> GetMultiplesOfTwoNumbers(int num1 = 3, int num2 = 5, int highestNumber = 1000)
@@ -456,6 +461,45 @@
                 sum += decimalArr[i];
             }
             return sum.ToString().Substring(0, 10);
+        }
+
+        static ulong GetLongestCollatzSequence()
+        {
+            int highestSteps = 0;
+            ulong highestCollatzStartNumber = 0;
+
+            for (ulong i = 1; i < 999999; i++)
+            {
+                (ulong startNumber, int steps) = GetNumberOfCollatzSequenceSteps(i);
+
+                if(steps > highestSteps)
+                {
+                    highestSteps = steps;
+                    highestCollatzStartNumber = startNumber;
+                }
+            }
+            return highestCollatzStartNumber;
+        }
+
+        static (ulong, int) GetNumberOfCollatzSequenceSteps(ulong startNumber)
+        {
+            int steps = 0;
+            ulong number = startNumber;
+
+            while (number != 1)
+            {
+                if(number % 2 == 0)
+                {
+                    number /= 2;
+                }
+
+                else if(number>1)
+                {
+                    number = number * 3 + 1;
+                }
+                steps++;
+            }
+            return (startNumber, steps);
         }
     }
 }
