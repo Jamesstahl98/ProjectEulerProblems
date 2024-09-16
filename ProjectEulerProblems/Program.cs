@@ -109,7 +109,8 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            Console.WriteLine(GetLongestCollatzSequence());
+            Console.WriteLine(PowerDigitSum(1000));
+            Console.ReadLine();
         }
 
         static List<int> GetMultiplesOfTwoNumbers(int num1 = 3, int num2 = 5, int highestNumber = 1000)
@@ -500,6 +501,20 @@ namespace ProjectEulerProblems
                 steps++;
             }
             return (startNumber, steps);
+        }
+
+        static int PowerDigitSum(UInt128 number)
+        {
+            int sum = 0;
+            number = (UInt128)Math.Pow(2, (double)number);
+            char[] charArr = number.ToString().ToCharArray();
+            
+            for (int i = 0; i < charArr.Length; i++)
+            {
+                sum += (charArr[i] - '0');
+            }
+
+            return sum;
         }
     }
 }
