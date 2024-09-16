@@ -109,7 +109,13 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            Console.WriteLine(PowerDigitSum(1000));
+            int sumOfTotalCharacters = 0;
+
+            for (int i = 1; i < 1001; i++)
+            {
+                sumOfTotalCharacters += ConvertIntToNumberOfCharacters(i);
+            }
+            Console.WriteLine(sumOfTotalCharacters);
             Console.ReadLine();
         }
 
@@ -514,6 +520,138 @@ namespace ProjectEulerProblems
                 sum += (charArr[i] - '0');
             }
 
+            return sum;
+        }
+
+        static int[] GetArrayOfInts(int number)
+        {
+            int[] digits = number.ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray();
+            return digits;
+        }
+
+        static int ConvertIntToNumberOfCharacters(int number)
+        {
+            string[] digitStrings = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+            string[] tenToNineteenStrings = { "", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+            string[] DigitTimesTenStrings = { "", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+            int[] numberIntArr = GetArrayOfInts(number);
+            List<String> stringList = new List<String>();
+
+            for (int i = 0; i < numberIntArr.Length; i++)
+            {
+                stringList.Add(digitStrings[numberIntArr[i]]);
+                if (numberIntArr.Length == 5)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            stringList[i] = DigitTimesTenStrings[numberIntArr[i]];
+                            break;
+                        case 1:
+                            if (numberIntArr[i - 1] == 1 && numberIntArr[i] != 0)
+                            {
+                                stringList[i] = tenToNineteenStrings[numberIntArr[i]];
+                                stringList[i - 1] = "";
+                            }
+                            stringList[i] += "thousand";
+                            break;
+                        case 2:
+                            if (numberIntArr[i] != 0)
+                                stringList[i] += "hundred";
+                            break;
+                        case 3:
+                            stringList[i] = DigitTimesTenStrings[numberIntArr[i]];
+                            break;
+                        case 4:
+                            if (numberIntArr[i - 1] == 1 && numberIntArr[i] != 0)
+                            {
+                                stringList[i] = tenToNineteenStrings[numberIntArr[i]];
+                                stringList[i - 1] = "";
+                            }
+                            break;
+                    }
+                }
+
+                if (numberIntArr.Length == 4)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            stringList[i] += "thousand";
+                            break;
+                        case 1:
+                            if (numberIntArr[i] != 0)
+                                stringList[i] += "hundred";
+                            break;
+                        case 2:
+                            stringList[i] = DigitTimesTenStrings[numberIntArr[i]];
+                            break;
+                        case 3:
+                            if (numberIntArr[i - 1] == 1 && numberIntArr[i] != 0)
+                            {
+                                stringList[i] = tenToNineteenStrings[numberIntArr[i]];
+                                stringList[i - 1] = "";
+                            }
+                            break;
+                    }
+                }
+
+                if (numberIntArr.Length == 3)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            if (numberIntArr[i] != 0)
+                                stringList[i] += " hundred";
+                            break;
+                        case 1:
+                            stringList[i] = DigitTimesTenStrings[numberIntArr[i]];
+                            break;
+                        case 2:
+                            if (numberIntArr[i - 1] == 1 && numberIntArr[i] != 0)
+                            {
+                                stringList[i] = tenToNineteenStrings[numberIntArr[i]];
+                                stringList[i - 1] = "";
+                            }
+                            break;
+                    }
+                }
+
+                if (numberIntArr.Length == 2)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            stringList[i] = DigitTimesTenStrings[numberIntArr[i]];
+                            break;
+                        case 1:
+                            if (numberIntArr[i - 1] == 1 && numberIntArr[i] != 0)
+                            {
+                                stringList[i] = tenToNineteenStrings[numberIntArr[i]];
+                                stringList[i - 1] = "";
+                            }
+                            break;
+                    }
+                }
+            }
+
+            int sum = 0;
+
+            if (stringList.Count >2 && (stringList[stringList.Count - 1] != "" && stringList[stringList.Count - 2] != ""))
+            {
+                sum += 3;
+            }
+            stringList = stringList.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+            
+            string finalString = string.Join(" ", stringList);
+
+            for (int i = 0; i < finalString.Length; i++)
+            {
+                if (finalString[i] != ' ')
+                {
+                    sum++;
+                }
+            }
             return sum;
         }
     }
