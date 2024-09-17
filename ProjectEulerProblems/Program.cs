@@ -10,11 +10,15 @@ namespace ProjectEulerProblems
         static Dictionary<string, long> pathsDictionary = new Dictionary<string, long>();
         static int gridSize = 20;
 
-        /************************Maximum Path Sum I************************/
-        static Dictionary<string, long> triangleNumbers = new Dictionary<string, long>();
+        /************************CountingSundays************************/
+        static DateTime startDate = new DateTime(1901, 1, 1);
+        static DateTime endDate = new DateTime(2000, 12, 31);
+        static (int, int, int) startDateTuple = (1901, 1, 1);
+        static (int, int, int) endDateTuple = (2000, 12, 31);
 
         static void Main(string[] args)
         {
+            
             /*Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
 463769376774900097.12648124896970078050417018260538 
 743249861995247410.59474233309513058123726617309629 
@@ -116,7 +120,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
             
-            Console.WriteLine(MaximumPathSum1());
+            Console.WriteLine(CountingSundaysNoDateTime(startDateTuple, endDateTuple));
             Console.ReadLine();
         }
 
@@ -726,6 +730,68 @@ namespace ProjectEulerProblems
             new int[] { 63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31 },
             new int[] {  4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23 }
             };
+        }
+
+        static int CountingSundaysUsingDateTime(DateTime startDate, DateTime endDate)
+        {
+            int sundays = 0;
+            DateTime currentDate = startDate;
+
+            while(currentDate < endDate)
+            {
+                if (currentDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    sundays++;
+                }
+                currentDate = currentDate.AddMonths(1);
+            }
+            return sundays;
+        }
+
+        static int CountingSundaysNoDateTime((int year, int month, int day) startDate, (int year, int month, int day) endDate)
+        {
+            int sundays = 0;
+            int daysUntilSunday = 5;
+
+            int[] monthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+            (int year, int month, int day) currentDate = startDate;
+
+            while (currentDate.year <= endDate.year)
+            {
+                currentDate.day++;
+                daysUntilSunday--;
+
+                if(currentDate.day > monthDays[currentDate.month-1])
+                {
+                    currentDate.day = 1;
+                    currentDate.month++;
+                }
+                if(currentDate.month > monthDays.Length)
+                {
+                    currentDate.month = 1;
+                    currentDate.year++;
+                    if (currentDate.year % 4 == 0 &&
+                        (currentDate.year.ToString().Substring(2) != "00" || currentDate.year % 400 == 0))
+                    {
+                        monthDays[1] = 29;
+                    }
+                    else
+                    {
+                        monthDays[1] = 28;
+                    }
+                }
+                if(daysUntilSunday == 0)
+                {
+                    if(currentDate.day == 1)
+                    {
+                        sundays++;
+                    }
+                    daysUntilSunday = 7;
+                }
+            }
+
+            return sundays;
         }
     }
 }
