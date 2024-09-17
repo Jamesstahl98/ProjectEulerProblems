@@ -6,6 +6,9 @@ namespace ProjectEulerProblems
 {
     internal class Program
     {
+        /************************LATTICEPATHS************************/
+        static Dictionary<string, long> pathsDictionary = new Dictionary<string, long>();
+        static int gridSize = 20;
         static void Main(string[] args)
         {
             /*Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
@@ -109,13 +112,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            int sumOfTotalCharacters = 0;
-
-            for (int i = 1; i < 1001; i++)
-            {
-                sumOfTotalCharacters += ConvertIntToNumberOfCharacters(i);
-            }
-            Console.WriteLine(sumOfTotalCharacters);
+        Console.WriteLine(LatticePaths());
             Console.ReadLine();
         }
 
@@ -486,6 +483,38 @@ namespace ProjectEulerProblems
                 }
             }
             return highestCollatzStartNumber;
+        }
+
+        static long GetRemainingSurface(long x, long y)
+        {
+            return (gridSize - x) * (gridSize - y);
+        }
+
+        static long LatticePaths(int x = 0, int y = 0)
+        {
+            long surface = GetRemainingSurface(x, y);
+            long paths = 0;
+
+            if (surface == 0)
+            {
+                return 1;
+            }
+
+            string block = (gridSize - x) + "x" + (gridSize - y);
+
+            if(!pathsDictionary.ContainsKey(block))
+            {
+                if (x<gridSize)
+                {
+                    paths += LatticePaths(x + 1, y);
+                }
+                if(y<gridSize)
+                {
+                    paths += LatticePaths(x, y + 1);
+                }
+                pathsDictionary[block] = paths;
+            }
+            return pathsDictionary[block];
         }
 
         static (ulong, int) GetNumberOfCollatzSequenceSteps(ulong startNumber)
