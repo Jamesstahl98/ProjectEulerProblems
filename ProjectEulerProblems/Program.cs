@@ -9,6 +9,10 @@ namespace ProjectEulerProblems
         /************************LATTICEPATHS************************/
         static Dictionary<string, long> pathsDictionary = new Dictionary<string, long>();
         static int gridSize = 20;
+
+        /************************Maximum Path Sum I************************/
+        static Dictionary<string, long> triangleNumbers = new Dictionary<string, long>();
+
         static void Main(string[] args)
         {
             /*Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
@@ -111,8 +115,8 @@ namespace ProjectEulerProblems
 721078384350691861.55435662884062257473692284509516 
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
-
-        Console.WriteLine(LatticePaths());
+            
+            Console.WriteLine(MaximumPathSum1());
             Console.ReadLine();
         }
 
@@ -682,6 +686,46 @@ namespace ProjectEulerProblems
                 }
             }
             return sum;
+        }
+
+        static int MaximumPathSum1()
+        {
+            int[][] triangle = GetTriangle();
+
+            for (int rowI = triangle.Length - 2; rowI >= 0; rowI--)
+            {
+                int[] row = triangle[rowI];
+                for (int colI = 0; colI < row.Length; colI++)
+                {
+                    row[colI] += Math.Max(
+                        triangle[rowI + 1][colI],
+                        triangle[rowI + 1][colI + 1]
+                    );
+                }
+            }
+            return triangle[0][0];
+        }
+
+        static int[][] GetTriangle()
+        {
+            return new int[][]
+            {
+            new int[] { 75 },
+            new int[] { 95, 64 },
+            new int[] { 17, 47, 82 },
+            new int[] { 18, 35, 87, 10 },
+            new int[] { 20,  4, 82, 47, 65 },
+            new int[] { 19,  1, 23, 75,  3, 34 },
+            new int[] { 88,  2, 77, 73,  7, 63, 67 },
+            new int[] { 99, 65,  4, 28,  6, 16, 70, 92 },
+            new int[] { 41, 41, 26, 56, 83, 40, 80, 70, 33 },
+            new int[] { 41, 48, 72, 33, 47, 32, 37, 16, 94, 29 },
+            new int[] { 53, 71, 44, 65, 25, 43, 91, 52, 97, 51, 14 },
+            new int[] { 70, 11, 33, 28, 77, 73, 17, 78, 39, 68, 17, 57 },
+            new int[] { 91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48 },
+            new int[] { 63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31 },
+            new int[] {  4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23 }
+            };
         }
     }
 }
