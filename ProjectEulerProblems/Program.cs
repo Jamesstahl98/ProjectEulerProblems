@@ -121,7 +121,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
             
-            Console.WriteLine(AmicableNumbers(10000));
+            Console.WriteLine(NameScores("C:\\Projects\\ProjectEulerProblems\\ProjectEulerProblems\\0022_names.txt"));
             Console.ReadLine();
         }
 
@@ -845,6 +845,32 @@ namespace ProjectEulerProblems
                 }
             }
             return sum;
+        }
+
+        static ulong NameScores(string file)
+        {
+            if (!File.Exists(file))
+                return 0;
+
+            ulong totalNameScore = 0;
+            string fileContents = File.ReadAllText(file);
+
+            string[] nameArray = fileContents.Split(',');
+            Array.Sort(nameArray);
+
+            for (int i = 0; i < nameArray.Length; i++)
+            {
+                ulong nameScore = 0;
+                for (int j = 1; j < nameArray[i].Length-1; j++)
+                {
+                    nameScore += (ulong)nameArray[i][j] - 64;
+                }
+
+                nameScore *= (ulong)i + 1;
+                totalNameScore += nameScore;
+            }
+
+            return totalNameScore;
         }
     }
 }
