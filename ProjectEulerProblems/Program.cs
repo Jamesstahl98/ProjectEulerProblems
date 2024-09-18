@@ -121,7 +121,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
             
-            Console.WriteLine(FactorialDigitSum(100));
+            Console.WriteLine(AmicableNumbers(10000));
             Console.ReadLine();
         }
 
@@ -812,6 +812,38 @@ namespace ProjectEulerProblems
                 sum += factorialDigitCharArr[i] - '0';
             }
 
+            return sum;
+        }
+
+        static int AmicableNumbers(int input)
+        {
+            int sum = 0;
+
+            for (int i = 0; i < input; i++)
+            {
+                int num1 = GetSumOfDivisors(i);
+                int num2 = GetSumOfDivisors(GetSumOfDivisors(i));
+                
+                if (num2 == i && num1 != num2)
+                {
+                    sum = sum + i;
+                }
+            }
+
+            return sum;
+        }
+
+        static int GetSumOfDivisors(int number)
+        {
+            int sum = 0;
+
+            for (int i = 1; i <= number/2; i++)
+            {
+                if(number % i == 0)
+                {
+                    sum += i;
+                }
+            }
             return sum;
         }
     }
