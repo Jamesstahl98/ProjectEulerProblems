@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using static ProjectEulerProblems.Program;
 
@@ -120,7 +121,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
             
-            Console.WriteLine(CountingSundaysNoDateTime(startDateTuple, endDateTuple));
+            Console.WriteLine(FactorialDigitSum(100));
             Console.ReadLine();
         }
 
@@ -792,6 +793,26 @@ namespace ProjectEulerProblems
             }
 
             return sundays;
+        }
+
+        static int FactorialDigitSum(BigInteger number)
+        {
+            BigInteger factorialDigit = 1;
+            int sum = 0;
+
+            for (BigInteger i = number; i > 0; i--)
+            {
+                factorialDigit *= i;
+            }
+
+            char[] factorialDigitCharArr = factorialDigit.ToString().ToCharArray();
+
+            for (int i = 0; i < factorialDigitCharArr.Length; i++)
+            {
+                sum += factorialDigitCharArr[i] - '0';
+            }
+
+            return sum;
         }
     }
 }
