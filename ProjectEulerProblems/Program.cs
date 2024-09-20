@@ -124,7 +124,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            Console.WriteLine(ThousandDigitFibonacciNumber());
+            Console.WriteLine(ReciprocalCycles());
             Console.ReadLine();
         }
 
@@ -1006,6 +1006,44 @@ namespace ProjectEulerProblems
                 fibNumber1 = fibNumber2;
                 fibNumber2 = nextFibNumber;
             }
+        }
+
+        static int ReciprocalCycles(int limit = 1000)
+        {
+            int highestCycleLength = 0;
+
+            for (int d = 1; d < limit; d++)
+            {
+                int currentCycleLength = GetCycleLength(d);
+                if(currentCycleLength > highestCycleLength)
+                {
+                    highestCycleLength = currentCycleLength;
+                }
+            }
+            return highestCycleLength;
+        }
+
+        static int GetCycleLength(int divisor)
+        {
+            Dictionary<int, int> remainderPositions = new();
+
+            int remainder = 1;
+            int position = 0;
+
+            while(remainder != 0)
+            {
+                if (remainderPositions.ContainsKey(remainder))
+                {
+                    return position - remainderPositions[remainder];
+                }
+
+                remainderPositions[remainder] = position;
+
+                remainder = (remainder * 10) % divisor;
+                position++;
+            }
+
+            return 0;
         }
     }
 }
