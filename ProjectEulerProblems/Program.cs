@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using static ProjectEulerProblems.Program;
@@ -19,7 +20,7 @@ namespace ProjectEulerProblems
 
         static void Main(string[] args)
         {
-            
+
             /*Console.WriteLine(GetFirstTenDigitsOfSum(@"371072875339021027.98797998220837590246510135740250 
 463769376774900097.12648124896970078050417018260538 
 743249861995247410.59474233309513058123726617309629 
@@ -120,8 +121,8 @@ namespace ProjectEulerProblems
 721078384350691861.55435662884062257473692284509516 
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
-            
-            Console.WriteLine(NameScores("C:\\Projects\\ProjectEulerProblems\\ProjectEulerProblems\\0022_names.txt"));
+
+            Console.WriteLine(NonAbundantSums());
             Console.ReadLine();
         }
 
@@ -871,6 +872,56 @@ namespace ProjectEulerProblems
             }
 
             return totalNameScore;
+        }
+
+        static int NonAbundantSums(int limit = 28123)
+        {
+            int sum = 0;
+            List <int> abundantNumbers = GetAbundantNumbers(limit);
+
+            for (int i = 1; i < limit; i++)
+            {
+                bool isSumOfAbundantNumber = false;
+                for (int j = 0; j < abundantNumbers.Count; j++)
+                {
+                    if (abundantNumbers[j] >= i)
+                    {
+                        break;
+                    }
+                    if (abundantNumbers.Contains(i - abundantNumbers[j]))
+                    {
+                        isSumOfAbundantNumber = true;
+                        break;
+                    }
+                }
+                if(!isSumOfAbundantNumber)
+                {
+                    sum += i;
+                }
+            }
+            return sum;
+        }
+
+        static List<int> GetAbundantNumbers(int limit)
+        {
+            List<int> abundantNumbers = new();
+
+            for (int i = 1; i < limit; i++)
+            {
+                int sumOfDivisors = 0;
+                for (int j = 1; j <= i/2; j++)
+                {
+                    if (i % j == 0)
+                    {
+                        sumOfDivisors += j;
+                    }
+                }
+                if(sumOfDivisors > i)
+                {
+                    abundantNumbers.Add(i);
+                }
+            }
+            return abundantNumbers;
         }
     }
 }
