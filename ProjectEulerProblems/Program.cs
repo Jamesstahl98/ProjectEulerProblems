@@ -124,7 +124,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            Console.WriteLine(LexicographicPermutations());
+            Console.WriteLine(ThousandDigitFibonacciNumber());
             Console.ReadLine();
         }
 
@@ -934,22 +934,17 @@ namespace ProjectEulerProblems
 
             for (int count = 1; count < limit; count++)
             {
-                // Find the largest index i such that inputArr[i - 1] < inputArr[i]
                 for (i = inputArr.Length - 1; i > 0 && inputArr[i - 1] >= inputArr[i]; i--) ;
 
-                // If no such index exists, we have the last permutation
                 if (i == 0)
-                    break;  // Prevents out of bounds errors
+                    break;
 
-                // Find the largest index j such that inputArr[j] > inputArr[i - 1]
                 for (j = inputArr.Length - 1; j > 0 && inputArr[j] <= inputArr[i - 1]; j--) ;
 
-                // Swap inputArr[i - 1] and inputArr[j]
                 char temp = inputArr[i - 1];
                 inputArr[i - 1] = inputArr[j];
                 inputArr[j] = temp;
 
-                // Reverse the sequence from i to the end of the array
                 for (j = inputArr.Length - 1; i < j; i++, j--)
                 {
                     temp = inputArr[i];
@@ -958,7 +953,59 @@ namespace ProjectEulerProblems
                 }
             }
 
-            return new string(inputArr); // Correct way to return the string representation
+            return new string(inputArr);
+        }
+
+        static int ThousandDigitFibonacciNumberBigInt()
+        {
+            int count = 1;
+            BigInteger fibonacciNumber = 1;
+            BigInteger lastFibonacciNumber = 0;
+
+            while(fibonacciNumber.ToString().Length < 1000)
+            {
+                count++;
+
+                BigInteger temp = fibonacciNumber;
+                fibonacciNumber += lastFibonacciNumber;
+                lastFibonacciNumber = temp;
+            }
+
+            return count;
+        }
+
+        static int ThousandDigitFibonacciNumber()
+        {
+            int[] fibNumber1 = new int[1000];
+            int[] fibNumber2 = new int[1000];
+            
+            fibNumber1[0] = 1;
+            fibNumber2[0] = 1;
+
+            int count = 2;
+
+            while(true)
+            {
+                count++;
+
+                int[] nextFibNumber = new int[1000];
+
+                int carry = 0;
+                for (int i = 0; i < 1000; i++)
+                {
+                    int sum = fibNumber1[i] + fibNumber2[i] + carry;
+                    nextFibNumber[i] = sum % 10;
+                    carry = sum / 10;
+                }
+
+                if (nextFibNumber[999] != 0)
+                {
+                    return count;
+                }
+
+                fibNumber1 = fibNumber2;
+                fibNumber2 = nextFibNumber;
+            }
         }
     }
 }
