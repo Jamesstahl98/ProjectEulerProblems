@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Numerics;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
@@ -122,7 +124,7 @@ namespace ProjectEulerProblems
 208496039801340017.23930671666823555245252804609722 
 535035342264725242.50874054075591789781264330331690"));*/
 
-            Console.WriteLine(NonAbundantSums());
+            Console.WriteLine(LexicographicPermutations());
             Console.ReadLine();
         }
 
@@ -922,6 +924,41 @@ namespace ProjectEulerProblems
                 }
             }
             return abundantNumbers;
+        }
+
+        static string LexicographicPermutations(string input = "0123456789", int limit = 1000000)
+        {
+            char[] inputArr = input.ToCharArray();
+
+            int i, j;
+
+            for (int count = 1; count < limit; count++)
+            {
+                // Find the largest index i such that inputArr[i - 1] < inputArr[i]
+                for (i = inputArr.Length - 1; i > 0 && inputArr[i - 1] >= inputArr[i]; i--) ;
+
+                // If no such index exists, we have the last permutation
+                if (i == 0)
+                    break;  // Prevents out of bounds errors
+
+                // Find the largest index j such that inputArr[j] > inputArr[i - 1]
+                for (j = inputArr.Length - 1; j > 0 && inputArr[j] <= inputArr[i - 1]; j--) ;
+
+                // Swap inputArr[i - 1] and inputArr[j]
+                char temp = inputArr[i - 1];
+                inputArr[i - 1] = inputArr[j];
+                inputArr[j] = temp;
+
+                // Reverse the sequence from i to the end of the array
+                for (j = inputArr.Length - 1; i < j; i++, j--)
+                {
+                    temp = inputArr[i];
+                    inputArr[i] = inputArr[j];
+                    inputArr[j] = temp;
+                }
+            }
+
+            return new string(inputArr); // Correct way to return the string representation
         }
     }
 }
